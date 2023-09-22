@@ -23,6 +23,12 @@ router.get('/:pid', (req, res, next) => {
     return p.id === placeId;
   });
 
+  if (!place) {
+    const error = new Error('Could not find a place for the provided ID');
+    error.code = 404;
+    throw error; 
+  }
+
   res.json({ place });
 });
 
@@ -32,6 +38,14 @@ router.get('/user/:uid', (req, res, next) => {
   const place = DUMMY_PLACES.find(p => {
     return p.creator === userId;
   });
+
+  if (!place) {
+    if (!place) {
+      const error = new Error('Could not find a place for the provided user ID');
+      error.code = 404;
+      throw error; // use 'return next(error)' when dealing with asynchronous code!
+    }
+  }
   
   res.json({ place });
 });
