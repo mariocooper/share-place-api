@@ -2,6 +2,7 @@ const uuid = require('uuid');
 const { validationResult } = require('express-validator');
 
 const HttpError = require('../models/http-error');
+const getCoordsForAddress = require('../util/location');
 
 let DUMMY_PLACES = [
   {
@@ -53,8 +54,10 @@ const createPlace = (req, res, next) => {
     throw new HttpError('Invalid inputs passed, please try again', 422);
   }
   
-  const { title, description, location, address, creator } = req.body;
-  // const title = req.body.title
+  const { title, description, address, creator } = req.body; // const title = req.body.title
+
+  const location = getCoordsForAddress(address);
+
   const createdPlace = {
     id: uuid.v4(),
     title, // title: title
