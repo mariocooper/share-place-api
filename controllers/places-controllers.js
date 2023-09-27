@@ -3,6 +3,7 @@ const { validationResult } = require('express-validator');
 
 const HttpError = require('../models/http-error');
 const getCoordsForAddress = require('../util/location');
+const Place = require('../models/place');
 
 let DUMMY_PLACES = [
   {
@@ -47,27 +48,35 @@ const getPlacesByUserId = (req, res, next) => {
   res.json({ places });
 };
 
-const createPlace = (req, res, next) => {
+const createPlace = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     console.log(errors);
     throw new HttpError('Invalid inputs passed, please try again', 422);
   }
   
-  const { title, description, address, creator } = req.body; // const title = req.body.title
+  const { title, description, address, creator } = req.body;
 
   const location = getCoordsForAddress(address);
 
-  const createdPlace = {
-    id: uuid.v4(),
-    title, // title: title
+  const createdPlace = new Place({
+    title,
     description,
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/NYC_Empire_State_Building.jpg/640px-NYC_Empire_State_Building.jpg",
     location,
     address,
     creator
-  };
+  });
 
-  DUMMY_PLACES.push(createdPlace); //DUMMY_PLACES.unshift(createdPlace) if want to add it as the first element
+  try {
+    await createdPlace.save();
+  } catch (err) {
+    const error = new HttpError(
+      'Creating place failed, please try again',
+      500
+    );
+    return next(error);
+  }
 
   res.status(201).json({place: createdPlace});
 };
