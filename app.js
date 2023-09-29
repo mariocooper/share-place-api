@@ -28,7 +28,7 @@ app.use((error, req, res, next) => {
 });
 
 mongoose
-  .connect('mongodb+srv://mariocooper:pB9zb8V5Qaunv7jP@share-place-api.z8qcp7a.mongodb.net/places?retryWrites=true&w=majority')
+  .connect('mongodb+srv://mariocooper:pB9zb8V5Qaunv7jP@share-place-api.z8qcp7a.mongodb.net/share-place?retryWrites=true&w=majority')
   .then(() => {
     app.listen(5000);
   })
