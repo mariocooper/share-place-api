@@ -6,22 +6,8 @@ const getCoordsForAddress = require('../util/location');
 const Place = require('../models/place');
 const User = require('../models/user');
 
-let DUMMY_PLACES = [
-  {
-    id: "p1",
-    title: "Empire State Building",
-    description: "The world's most magnificent Art Deco skyscraper",
-    location: {
-        lat: 40.7484405,
-        lng: -73.9878584
-    },
-    address: "20 W 34th St., New York, NY 10001, USA",
-    creator: "u1"
-  },
-];
-
 const getPlaceById = async (req, res, next) => {
-  const placeId = req.params.pid; // { pid: 'p1' }
+  const placeId = req.params.pid;
   
   let place;
   try {
@@ -73,8 +59,9 @@ const getPlacesByUserId = async (req, res, next) => {
 const createPlace = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    console.log(errors);
-    throw new HttpError('Invalid inputs passed, please try again', 422);
+    return next(
+      new HttpError('Invalid inputs passed, please try again', 422)
+    );
   }
   
   const { title, description, address, creator } = req.body;
@@ -109,8 +96,6 @@ const createPlace = async (req, res, next) => {
     return next(error);
   }
 
-  console.log(user);
-
   try {
     const sess = await mongoose.startSession();
     sess.startTransaction();
@@ -132,7 +117,6 @@ const createPlace = async (req, res, next) => {
 const updatePlace = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    console.log(errors);
     return next(
       new HttpError('Invalid inputs passed, please try again', 422)
     );

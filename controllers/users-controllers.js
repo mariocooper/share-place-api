@@ -3,15 +3,6 @@ const { validationResult } = require('express-validator');
 const HttpError = require('../models/http-error');
 const User = require('../models/user');
 
-const DUMMY_USERS = [
-  {
-    id: 'u1',
-    name: 'John Doe',
-    email: 'johndoe@email.com',
-    password: 'password'
-  }
-];
-
 const getUsers = async (req, res, next) => {
   let users;
   try {
@@ -29,7 +20,6 @@ const getUsers = async (req, res, next) => {
 const signup = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    console.log(errors);
     return next(
       new HttpError('Invalid inputs passed, please try again', 422)
     );
