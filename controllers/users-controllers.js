@@ -51,7 +51,7 @@ const signup = async (req, res, next) => {
     name,
     email,
     password,
-    image: 'https://live.staticflickr.com/7631/26849088292_36fc52ee90_b.jpg',
+    image: 'https://media.istockphoto.com/id/1034357476/photo/indoor-photo-of-handsome-european-guy-pictured-isolated-on-grey-background-standing-close-to.webp?b=1&s=170667a&w=0&k=20&c=JXpvLDX1dRzAIIE4js5q6A_0v9qojsT-tqGdDjZO_Zs=',
     places: []
   });
 
